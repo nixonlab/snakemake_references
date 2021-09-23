@@ -1,0 +1,27 @@
+
+
+# Remote files to be downloaded to refs/downloads
+remotefiles:
+    GRCh38.d1.vd1.fa.tar.gz:
+        url: "https://api.gdc.cancer.gov/data/254f697d-310d-4d7d-a27b-27fbf767a834"
+        md5: "3ffbcfe2d05d43206f57f81ebb251dc9"
+    GRCh38.d1.vd1_BWA.tar.gz:
+        url: "https://api.gdc.cancer.gov/data/25217ec9-af07-4a17-8db9-101271ee7225"
+        md5: "015f5223bddd93b6e8f7a038c171f7be"
+    GRCh38.d1.vd1_GATK_indices.tar.gz:
+        url: "https://api.gdc.cancer.gov/data/2c5730fb-0909-4e2a-8a7a-c9a7f8b2dad5"
+        md5: "f64be73587a7f376c0d8353f1636dca7"
+    star.index.genome.d1.vd1.gtfv22.tar.gz:
+        url: "https://api.gdc.cancer.gov/data/50e11f67-ceb4-41f9-a73c-2a5aa9ed0af0"
+        md5: "7c2e6bd5767239c7c9eb618cd03bcadb"
+    gencode.v22.annotation.gtf.gz:
+        url: "https://api.gdc.cancer.gov/data/25aa497c-e615-4cb7-8751-71f744f9691f"
+        md5: "291330bdcff1094bc4d5645de35e0871"
+    gencode.v22.annotation.flattened.gff:
+        url: "https://api.gdc.cancer.gov/data/45fd5d98-b5cd-45ff-9d02-fc3f260532cc"
+        md5: "5a843572abc2321e42eaafbe99c47363"
+    gencode.gene.info.v22.tsv:
+        url: "https://api.gdc.cancer.gov/data/b011ee3e-14d8-4a97-aed4-e0b10f6bbe82"
+        md5: "0a3f1d9b0a679e2a426de36d8d74fbf9"
+
+

@@ -1,0 +1,32 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from snakemake.utils import min_version
+
+min_version("6.4.1")
+
+configfile: "config/config.yaml"
+
+rule all:
+    input:
+        'databases/remotefiles/GRCh38.d1.vd1.fa.tar.gz',
+        'databases/remotefiles/star.index.genome.d1.vd1.gtfv22.tar.gz'
+
+
+rule download_remote:
+    """ Downloads a remote file and checks the md5sum.
+        Filenames, URLs and md5 checksums are configured in the `remotefiles` element of
+        the configfile
+    """
+    output:
+        'databases/remotefiles/{f}'
+    params:
+        url = lambda wildcards: config['remotefiles'][wildcards.f]['url'],
+        md5 = lambda wildcards: config['remotefiles'][wildcards.f]['md5']
+    shell:
+        '''
+curl -L {params.url} > {output[0]}
+echo {params.md5}  {output[0]} | md5sum -c -
+        '''
+
+
