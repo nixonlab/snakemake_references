@@ -29,4 +29,30 @@ curl -L {params.url} > {output[0]}
 echo {params.md5}  {output[0]} | md5sum -c -
         '''
 
+rule star_index_ncbi38_gencode38:
+    input:
+        fasta_gz = 'databases/remotefiles/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz',
+        gtf_gz = 'databases/remotefiles/gencode.v38.annotation.gtf.gz'
+    output:
+        directory("databases/star_index_ncbiHG38_gencode38")
+    params:
+        sjdbOverhang = 74
+    conda: "envs/star.yaml"
+    threads: 8
+    shell:
+        '''
+tdir=$(mktemp -d {config[local_tmp]}/{rule}.XXXXXX)
 
+pigz -dc {input.fasta_gz} > $tdir/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
+pigz -dc {input.gtf_gz} > $tdir/gencode.v38.annotation.gtf
+
+
+STAR\
+ --runThreadN {threads}\
+ --runMode genomeGenerate\
+ --genomeDir {output}\
+ --outFileNamePrefix {output}\
+ --genomeFastaFiles $tdir/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna\
+ --sjdbGTFfile $tdir/gencode.v38.annotation.gtf\
+ --sjdbOverhang {params.sjdbOverhang}
+        '''

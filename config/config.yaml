@@ -1,4 +1,4 @@
-
+local_tmp: "/scratch"
 
 # Remote files to be downloaded to refs/downloads
 remotefiles:
