@@ -38,7 +38,7 @@ rule star_index_ncbi38_gencode38:
     params:
         sjdbOverhang = 74
     conda: "envs/star.yaml"
-    threads: 8
+    threads: workflow.cores
     shell:
         '''
 tdir=$(mktemp -d {config[local_tmp]}/{rule}.XXXXXX)
