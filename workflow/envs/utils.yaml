@@ -1,0 +1,10 @@
+name: utils
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+    - samtools ==1.9
+    - picard-slim >=2.25
+    - tabix ==0.2.6
+    - gffread ==0.11.4
