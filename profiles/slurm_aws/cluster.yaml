@@ -1,0 +1,8 @@
+__default__:
+    args: "--parsable "
+    partition: "defq"
+    ntasks: 1
+    cpus-per-task: 24
+    output: "logs/slurm-%j.{rule}.{wildcards}.out"
+    job-name: "sm.{rule}.{wildcards}"
+    exclusive: ""    

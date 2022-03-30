@@ -1,5 +1,4 @@
-config: local_tmp="/scratch"
-jobs: 24
+jobs: 4
 local-cores: 1
 rerun-incomplete: true
 keep-going: true

@@ -1,4 +1,4 @@
-local_tmp: "/scratch"
+local_tmp: "/local"
 
 # Remote files to be downloaded to refs/downloads
 remotefiles:
@@ -35,3 +35,10 @@ remotefiles:
     gencode.v38.annotation.gtf.gz:
         url: "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz"
         md5: "16fcae8ca8e488cd8056cf317d963407"
+    retro.hg38.v1.gtf:
+        url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/transcripts.gtf"
+        md5: "c07cf115c1f957b3020efc547f3847fa"
+    retro.hg38.v1.tsv.gz:
+        url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/genes.tsv.gz"
+        md5: "b3ca6d3705d030742255d216e25dfc1d"
+

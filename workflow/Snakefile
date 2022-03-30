@@ -2,128 +2,23 @@
 # -*- coding: utf-8 -*-
 
 from snakemake.utils import min_version
+from os.path import splitext
 
 min_version("6.4.1")
 
 configfile: "config/config.yaml"
 
+wildcard_constraints:
+    fasta_base = '[\w\-. ]+\.(fasta|fa|fna)$'
+
+include: "rules/remote.smk"
+include: "rules/extract.smk"
+include: "rules/star_index.smk"
+include: "rules/repeat_annotation.smk"
+
 rule all:
     input:
-        'databases/remotefiles/GRCh38.d1.vd1.fa.tar.gz',
-        'databases/remotefiles/star.index.genome.d1.vd1.gtfv22.tar.gz'
+        rules.star_index_gdc38_gencode38.output,
+        rules.star_index_ncbi38_gencode38.output
 
-
-rule download_remote:
-    """ Downloads a remote file and checks the md5sum.
-        Filenames, URLs and md5 checksums are configured in the `remotefiles` element of
-        the configfile
-    """
-    output:
-        'databases/remotefiles/{f}'
-    params:
-        url = lambda wildcards: config['remotefiles'][wildcards.f]['url'],
-        md5 = lambda wildcards: config['remotefiles'][wildcards.f]['md5']
-    shell:
-        '''
-curl -L {params.url} > {output[0]}
-echo {params.md5}  {output[0]} | md5sum -c -
-        '''
-
-rule star_index_ncbi38_gencode38:
-    input:
-        fasta_gz = 'databases/remotefiles/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz',
-        gtf_gz = 'databases/remotefiles/gencode.v38.annotation.gtf.gz'
-    output:
-        directory("databases/star_index_ncbiHG38_gencode38")
-    params:
-        sjdbOverhang = 74
-    conda: "envs/star.yaml"
-    threads: workflow.cores
-    shell:
-        '''
-tdir=$(mktemp -d {config[local_tmp]}/{rule}.XXXXXX)
-
-pigz -dc {input.fasta_gz} > $tdir/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
-pigz -dc {input.gtf_gz} > $tdir/gencode.v38.annotation.gtf
-
-
-STAR\
- --runThreadN {threads}\
- --runMode genomeGenerate\
- --genomeDir {output}\
- --outFileNamePrefix {output}\
- --genomeFastaFiles $tdir/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna\
- --sjdbGTFfile $tdir/gencode.v38.annotation.gtf\
- --sjdbOverhang {params.sjdbOverhang}
-        '''
-
-rule extract_gdc38:
-    input:
-        'databases/remotefiles/GRCh38.d1.vd1.fa.tar.gz'
-    output:
-        'databases/sequences/GRCh38.d1.vd1.fa',
-        'databases/sequences/GRCh38.d1.vd1.fa.fai',
-        'databases/sequences/GRCh38.d1.vd1.dict'
-    conda:
-        "envs/utils.yaml"
-    shell:
-        '''
-mkdir -p $(dirname {output[0]})
-tar -Oxzf {input} > {output[0]}
-samtools faidx {output[0]}
-picard CreateSequenceDictionary R={output[0]} O={output[2]}
-        '''
-
-rule extract_gtf_gz:
-    input:
-        'databases/remotefiles/{f}.gtf.gz'
-    output:
-        'databases/annotations/{f}.gtf'    
-    shell:
-        '''
-echo {resources.tmpdir}
-gunzip -c {input} > {output}
-        '''
-
-rule star_index_gdc38_gencode38:
-    input:
-        fasta = 'databases/sequences/GRCh38.d1.vd1.fa',
-        gtf = 'databases/annotations/gencode.v38.annotation.gtf'
-    output:
-        directory("databases/indexes/STAR_gdc38_gencode38")
-    params:
-        sjdbOverhang = 74
-    conda: "envs/star.yaml"
-    threads: workflow.cores
-    shell:
-        '''
-STAR\
- --runThreadN {threads}\
- --runMode genomeGenerate\
- --genomeDir {output}\
- --outFileNamePrefix {output}\
- --genomeFastaFiles {input.fasta}\
- --sjdbGTFfile {input.gtf}\
- --sjdbOverhang {params.sjdbOverhang}
-        '''
-        
-
-
-# rule extract_gencode38:
-#     input:
-#         'databases/remotefiles/gencode.v38.annotation.gtf.gz',
-#         'databases/sequences/GRCh38.d1.vd1.fa.gz'
-#     output:
-#         'databases/sequences/GRCh38.d1.vd1.fa.gz',
-#         'databases/sequences/['transcripts_dupinfo'],
-#         'databases/sequences/['transcripts_list']
-#     conda:
-#         "../envs/utils.yaml"
-#     shell:
-#         '''
-# tfa=$(mktemp -p {config[local_tmp]})
-# gunzip -c {input[1]} > $tfa
-# gunzip -c {input[0]} | gffread - -M -d {output[1]} -g $tfa -w {output[0]}
-# grep ">" {output[0]} | sed "s/^>//" | sort | uniq > {output[2]}
-# rm -f $tfa*
-#         '''
+       

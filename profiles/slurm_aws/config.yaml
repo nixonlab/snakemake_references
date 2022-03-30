@@ -1,8 +1,20 @@
-restart-times: 3
-jobscript: "slurm-jobscript.sh"
-cluster: "slurm-submit.py"
-cluster-status: "slurm-status.py"
+cluster:
+    sbatch {cluster.args} 
+        --partition={cluster.partition}
+        --ntasks={cluster.ntasks}
+        --cpus-per-task={cluster.cpus-per-task}
+        --output={cluster.output}
+        --job-name={cluster.job-name}
+        {cluster.exclusive}
+cluster-status: "slurm_status.py"
+cluster-config: "cluster.yaml"
+jobs: 10000
+local-cores: 2
 max-jobs-per-second: 1
 max-status-checks-per-second: 10
-local-cores: 1
-latency-wait: 60
+rerun-incomplete: true
+keep-going: true
+use-conda: true
+conda-frontend: mamba
+printshellcmds: true
+reason: true
