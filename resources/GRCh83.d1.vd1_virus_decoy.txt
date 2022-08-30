@@ -1,0 +1,201 @@
+Name	Abbreviation	RefSeq	GenBank	PaVE ID	PaVE Notes
+Human Cytomegalovirus	CMV	NC_006273.2	AY446894.2		
+Epstein-Barr virus	chrEBV	NC_007605.1	AJ507799.2		
+Hepatitis B	HBV	NC_003977.1	X04615.1		
+Hepatitis C	HCV-1	NC_004102.1	AF009606.1		
+Hepatitis C	HCV-2	NC_009823.1	AF177036.1		
+Human immunodeficiency virus 1	HIV-1	NC_001802.1	AF033819.3		
+Human immunodeficiency virus 2	HIV-2	NC_001722.1	M30502.1		
+Human herpes virus 8	KSHV	NC_009333.1	AF148805.2		
+Human T-lymphotropic virus 1	HTLV-1	NC_001436.1	AF033817.1		
+Merkel cell polyomavirus	MCV	NC_010277.2	HM011556.1		
+Simian vacuolating virus 40	SV40	NC_001669.1	J02400.1		
+Human papillomavirus 16	HPV16	NC_001526	K02718	HPV16REF	Revised
+Human papillomavirus 18	HPV18	NC_001357	X05015	HPV18REF	Revised
+Human papillomavirus 26	HPV26	NC_001583	X74472	HPV26REF	
+Human papillomavirus 31	HPV31		J04353	HPV31REF	
+Human papillomavirus 33	HPV33		M12732	HPV33REF	
+Human papillomavirus 35	HPV35		X74477	HPV35REF	
+Human papillomavirus 39	HPV39		M62849	HPV39REF	
+Human papillomavirus 45	HPV45		X74479	HPV45REF	
+Human papillomavirus 51	HPV51		M62877	HPV51REF	
+Human papillomavirus 52	HPV52		X74481	HPV52REF	
+Human papillomavirus 53	HPV53	NC_001593	X74482	HPV53REF	Revised
+Human papillomavirus 56	HPV56		X74483	HPV56REF	Revised
+Human papillomavirus 58	HPV58		D90400	HPV58REF	
+Human papillomavirus 59	HPV59		X77858	HPV59REF	Revised
+Human papillomavirus 66	HPV66		U31794	HPV66REF	
+Human papillomavirus 68	HPV68		DQ080079	HPV68REF	
+Human papillomavirus 69	HPV69		AB027020	HPV69REF	
+Human papillomavirus 73	HPV73		X94165	HPV73REF	
+Human papillomavirus 82	HPV82		AB027021	HPV82REF	Revised
+Human papillomavirus 1	HPV1	NC_001356	V01116	HPV1REF	Revised
+Human papillomavirus 2	HPV2	NC_001352	X55964	HPV2REF	
+Human papillomavirus 3	HPV3		X74462	HPV3REF	
+Human papillomavirus 4	HPV4	NC_001457	X70827	HPV4REF	
+Human papillomavirus 5	HPV5	NC_001531	M17463	HPV5REF	Revised
+Human papillomavirus 6	HPV6	NC_001355	X00203	HPV6REF	Revised
+Human papillomavirus 7	HPV7	NC_001595	X74463	HPV7REF	
+Human papillomavirus 8	HPV8		M12737	HPV8REF	
+Human papillomavirus 9	HPV9	NC_001596	X74464	HPV9REF	
+Human papillomavirus 10	HPV10	NC_001576	X74465	HPV10REF	
+Human papillomavirus 11	HPV11		M14119	HPV11REF	
+Human papillomavirus 12	HPV12		X74466	HPV12REF	
+Human papillomavirus 13	HPV13		X62843	HPV13REF	
+Human papillomavirus 14	HPV14		X74467	HPV14REF	Revised
+Human papillomavirus 15	HPV15		X74468	HPV15REF	Revised
+Human papillomavirus 17	HPV17		X74469	HPV17REF	Revised
+Human papillomavirus 19	HPV19		X74470	HPV19REF	
+Human papillomavirus 20	HPV20		U31778	HPV20REF	
+Human papillomavirus 21	HPV21		U31779	HPV21REF	
+Human papillomavirus 22	HPV22		U31780	HPV22REF	
+Human papillomavirus 23	HPV23		U31781	HPV23REF	
+Human papillomavirus 24	HPV24	NC_001683	U31782	HPV24REF	
+Human papillomavirus 25	HPV25		X74471	HPV25REF	
+Human papillomavirus 27	HPV27		X74473	HPV27REF	
+Human papillomavirus 28	HPV28		U31783	HPV28REF	
+Human papillomavirus 29	HPV29		U31784	HPV29REF	
+Human papillomavirus 30	HPV30		X74474	HPV30REF	
+Human papillomavirus 32	HPV32	NC_001586	X74475	HPV32REF	
+Human papillomavirus 34	HPV34	NC_001587	X74476	HPV34REF	
+Human papillomavirus 36	HPV36		U31785	HPV36REF	
+Human papillomavirus 37	HPV37		U31786	HPV37REF	
+Human papillomavirus 38	HPV38		U31787	HPV38REF	
+Human papillomavirus 40	HPV40		X74478	HPV40REF	
+Human papillomavirus 41	HPV41	NC_001354	X56147	HPV41REF	
+Human papillomavirus 42	HPV42		M73236	HPV42REF	
+Human papillomavirus 43	HPV43		AJ620205	HPV43REF	
+Human papillomavirus 44	HPV44		U31788	HPV44REF	
+Human papillomavirus 47	HPV47		M32305	HPV47REF	
+Human papillomavirus 48	HPV48	NC_001690	U31789	HPV48REF	
+Human papillomavirus 49	HPV49	NC_001591	X74480	HPV49REF	
+Human papillomavirus 50	HPV50	NC_001691	U31790	HPV50REF	
+Human papillomavirus 54	HPV54	NC_001676	AF436129	HPV54REF	
+Human papillomavirus 57	HPV57		X55965	HPV57REF	
+Human papillomavirus 60	HPV60	NC_001693	U31792	HPV60REF	
+Human papillomavirus 61	HPV61	NC_001694	U31793	HPV61REF	
+Human papillomavirus 62	HPV62		AY395706	HPV62REF	
+Human papillomavirus 63	HPV63	NC_001458	X70828	HPV63REF	
+Human papillomavirus 65	HPV65		X70829	HPV65REF	
+Human papillomavirus 67	HPV67		D21208	HPV67REF	
+Human papillomavirus 70	HPV70		U21941	HPV70REF	
+Human papillomavirus 71	HPV71	NC_002644	AB040456	HPV71REF	Revised
+Human papillomavirus 72	HPV72		X94164	HPV72REF	Revised
+Human papillomavirus 74	HPV74		AF436130	HPV74REF	
+Human papillomavirus 75	HPV75		Y15173	HPV75REF	
+Human papillomavirus 76	HPV76		Y15174	HPV76REF	
+Human papillomavirus 77	HPV77		Y15175	HPV77REF	
+Human papillomavirus 78	HPV78		KC138720	HPV78REF	
+Human papillomavirus 80	HPV80		Y15176	HPV80REF	
+Human papillomavirus 81	HPV81		AJ620209	HPV81REF	
+Human papillomavirus 83	HPV83		AF151983	HPV83REF	
+Human papillomavirus 84	HPV84		AF293960	HPV84REF	
+Human papillomavirus 85	HPV85		AF131950	HPV85REF	
+Human papillomavirus 86	HPV86		AF349909	HPV86REF	
+Human papillomavirus 87	HPV87		AJ400628	HPV87REF	Revised
+Human papillomavirus 88	HPV88	NC_010329	EF467176	HPV88REF	
+Human papillomavirus 89	HPV89		AF436128	HPV89REF	
+Human papillomavirus 90	HPV90	NC_004104	AY057438	HPV90REF	
+Human papillomavirus 91	HPV91		AF419318	HPV91REF	
+Human papillomavirus 92	HPV92	NC_004500	AF531420	HPV92REF	
+Human papillomavirus 93	HPV93		AY382778	HPV93REF	
+Human papillomavirus 94	HPV94		AJ620211	HPV94REF	
+Human papillomavirus 95	HPV95		AJ620210	HPV95REF	
+Human papillomavirus 96	HPV96	NC_005134	AY382779	HPV96REF	
+Human papillomavirus 97	HPV97		DQ080080	HPV97REF	
+Human papillomavirus 98	HPV98	NC_012744	FM955837	HPV98REF	
+Human papillomavirus 99	HPV99	NC_012745	FM955838	HPV99REF	
+Human papillomavirus 100	HPV100	NC_012746	FM955839	HPV100REF	
+Human papillomavirus 101	HPV101	NC_008189	DQ080081	HPV101REF	
+Human papillomavirus 102	HPV102		DQ080083	HPV102REF	
+Human papillomavirus 103	HPV103	NC_008188	DQ080078	HPV103REF	
+Human papillomavirus 104	HPV104	NC_012750	FM955840	HPV104REF	
+Human papillomavirus 105	HPV105	NC_012747	FM955841	HPV105REF	
+Human papillomavirus 106	HPV106		DQ080082	HPV106REF	
+Human papillomavirus 107	HPV107		EF422221	HPV107REF	
+Human papillomavirus 108	HPV108	NC_012213	FM212639	HPV108REF	Revised
+Human papillomavirus 109	HPV109	NC_012485	EU541441	HPV109REF	
+Human papillomavirus 110	HPV110		EU410348	HPV110REF	
+Human papillomavirus 111	HPV111		EU410349	HPV111REF	Revised
+Human papillomavirus 112	HPV112	NC_012486	EU541442	HPV112REF	
+Human papillomavirus 113	HPV113	NC_012748	FM955842	HPV113REF	
+Human papillomavirus 114	HPV114	NC_013931	GQ244463	HPV114REF	Revised
+Human papillomavirus 115	HPV115	NC_013591	FJ947080	HPV115REF	
+Human papillomavirus 116	HPV116	NC_013035	FJ804072	HPV116REF	
+Human papillomavirus 117	HPV117		GQ246950	HPV117REF	
+Human papillomavirus 118	HPV118		GQ246951	HPV118REF	
+Human papillomavirus 119	HPV119		GQ845441	HPV119REF	
+Human papillomavirus 120	HPV120		GQ845442	HPV120REF	
+Human papillomavirus 121	HPV121	NC_014185	GQ845443	HPV121REF	
+Human papillomavirus 122	HPV122		GQ845444	HPV122REF	
+Human papillomavirus 123	HPV123		GQ845445	HPV123REF	
+Human papillomavirus 124	HPV124		GQ845446	HPV124REF	
+Human papillomavirus 125	HPV125		FN547152	HPV125REF	classification pending approval by ICTV
+Human papillomavirus 126	HPV126	NC_016157	AB646346	HPV126REF	classification pending approval by ICTV
+Human papillomavirus 127	HPV127	NC_014469	HM011570	HPV127REF	
+Human papillomavirus 128	HPV128	NC_014952	GU225708	HPV128REF	
+Human papillomavirus 129	HPV129	NC_014953	GU233853	HPV129REF	
+Human papillomavirus 130	HPV130		GU117630	HPV130REF	
+Human papillomavirus 131	HPV131	NC_014954	GU117631	HPV131REF	
+Human papillomavirus 132	HPV132	NC_014955	GU117632	HPV132REF	
+Human papillomavirus 133	HPV133		GU117633	HPV133REF	
+Human papillomavirus 134	HPV134	NC_014956	GU117634	HPV134REF	
+Human papillomavirus 135	HPV135	NC_017993	HM999987	HPV135REF	classification pending approval by ICTV
+Human papillomavirus 136	HPV136	NC_017994	HM999988	HPV136REF	classification pending approval by ICTV
+Human papillomavirus 137	HPV137	NC_017995	HM999989	HPV137REF	classification pending approval by ICTV
+Human papillomavirus 138	HPV138		HM999990	HPV138REF	
+Human papillomavirus 139	HPV139		HM999991	HPV139REF	
+Human papillomavirus 140	HPV140	NC_017996	HM999992	HPV140REF	classification pending approval by ICTV
+Human papillomavirus 141	HPV141		HM999993	HPV141REF	classification pending approval by ICTV
+Human papillomavirus 142	HPV142		HM999994	HPV142REF	
+Human papillomavirus 143	HPV143		HM999995	HPV143REF	classification pending approval by ICTV
+Human papillomavirus 144	HPV144	NC_017997	HM999996	HPV144REF	classification pending approval by ICTV
+Human papillomavirus 145	HPV145		HM999997	HPV145REF	classification pending approval by ICTV
+Human papillomavirus 146	HPV146		HM999998	HPV146REF	
+Human papillomavirus 147	HPV147		HM999999	HPV147REF	
+Human papillomavirus 148	HPV148	NC_014835	GU129016	HPV148REF	classification pending approval by ICTV
+Human papillomavirus 149	HPV149		GU117629	HPV149REF	
+Human papillomavirus 150	HPV150		FN677755	HPV150REF	
+Human papillomavirus 151	HPV151		FN677756	HPV151REF	
+Human papillomavirus 152	HPV152		JF304768	HPV152REF	
+Human papillomavirus 153	HPV153		JN171845	HPV153REF	classification pending approval by ICTV
+Human papillomavirus 154	HPV154	NC_021483	JN211193	HPV154REF	
+Human papillomavirus 155	HPV155		JF906559	HPV155REF	classification pending approval by ICTV
+Human papillomavirus 156	HPV156		JX429973	HPV156REF	
+Human papillomavirus 159	HPV159		HE963025	HPV159REF	
+Human papillomavirus 160	HPV160		AB745694	HPV160REF	
+Human papillomavirus 161	HPV161		JX413109	HPV161REF	
+Human papillomavirus 162	HPV162		JX413108	HPV162REF	
+Human papillomavirus 163	HPV163		JX413107	HPV163REF	
+Human papillomavirus 164	HPV164		JX413106	HPV164REF	
+Human papillomavirus 165	HPV165		JX444072	HPV165REF	
+Human papillomavirus 166	HPV166	NC_019023	JX413104	HPV166REF	
+Human papillomavirus 167	HPV167	NC_022892	KC862318	HPV167REF	
+Human papillomavirus 168	HPV168		KC862317	HPV168REF	
+Human papillomavirus 169	HPV169		JX413105	HPV169REF	
+Human papillomavirus 170	HPV170		JX413110	HPV170REF	
+Human papillomavirus 171	HPV171		KF006398	HPV171REF	
+Human papillomavirus 172	HPV172		KF006399	HPV172REF	
+Human papillomavirus 173	HPV173		KF006400	HPV173REF	
+Human papillomavirus 174	HPV174		HF930491	HPV174REF	
+Human papillomavirus 175	HPV175		KC108721	HPV175REF	
+Human papillomavirus 178	HPV178	NC_023891	KJ130020	HPV178REF	
+Human papillomavirus 179	HPV179	NC_022095	HG421739	HPV179REF	
+Human papillomavirus 180	HPV180		KC108722	HPV180REF	
+Human papillomavirus 184	HPV184		HG530535	HPV184REF	
+Human papillomavirus 197	HPV197		KM085343	HPV197REF	classification pending approval by ICTV
+Human papillomavirus 199	HPV199		KJ913662	HPV199REF	classification pending approval by ICTV
+Human papillomavirus -mCG2	HPV-mCG2		JF966378	HPV-mCG2nr	Pending classification by the Reference center
+Human papillomavirus -mCG3	HPV-mCG3		JF966379	HPV-mCG3nr	Pending classification by the Reference center
+Human papillomavirus -mCH2	HPV-mCH2		KF791917	HPV-mCH2nr	Pending classification by the Reference center
+Human papillomavirus -mFD1	HPV-mFD1		JF966375	HPV-mFD1nr	Pending classification by the Reference center
+Human papillomavirus -mFD2	HPV-mFD2		JF966376	HPV-mFD2nr	Pending classification by the Reference center
+Human papillomavirus -mFS1	HPV-mFS1		JF966373	HPV-mFS1nr	Pending classification by the Reference center
+Human papillomavirus -mFi864	HPV-mFi864		KC311731	HPV-mFi864nr	Pending classification by the Reference center
+Human papillomavirus -mKC5	HPV-mKC5		JX444073	HPV-mKC5nr	Pending classification by the Reference center
+Human papillomavirus -mKN1	HPV-mKN1		JF966371	HPV-mKN1nr	Pending classification by the Reference center
+Human papillomavirus -mKN2	HPV-mKN2		JF966372	HPV-mKN2nr	Pending classification by the Reference center
+Human papillomavirus -mKN3	HPV-mKN3		JF966374	HPV-mKN3nr	Pending classification by the Reference center
+Human papillomavirus -mL55	HPV-mL55		KF482069	HPV-mL55nr	Pending classification by the Reference center
+Human papillomavirus -mRTRX7	HPV-mRTRX7		U85660	HPV-mRTRX7nr	Pending classification by the Reference center
+Human papillomavirus -mSD2	HPV-mSD2		KC113191	HPV-mSD2nr	Pending classification by the Reference center
