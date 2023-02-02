@@ -10,8 +10,8 @@ min_version("6.4.1")
 configfile: "config/config.yaml"
 
 wildcard_constraints:
-    fasta_base = '[\w\-. ]+\.(fasta|fa|fna)',
-    f = '[\w\-. ]+'
+    f = '[\w\-. ]+',
+    fasta_base = '[\w\-. ]+\.(fasta|fa|fna)$'
 
 include: "rules/remote.smk"
 include: "rules/extract.smk"
@@ -20,6 +20,7 @@ include: "rules/repeat_annotation.smk"
 include: "rules/gencode.smk"
 include: "rules/sequences.smk"
 
+include: "rules/virus_annotation.smk"
 
 rule all:
     input:
