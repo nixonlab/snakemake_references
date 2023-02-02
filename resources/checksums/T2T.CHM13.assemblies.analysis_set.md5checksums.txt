@@ -1,0 +1,4 @@
+06caded0055ec647a69acb708e13beff  chm13v2.0.fa.gz
+bd90ddb80c86af7fcfeefe7a0909b175  chm13v2.0_maskedY.fa.gz
+b17cd2bdd8eb5544e195d6a8882e417b  chm13v2.0_maskedY_rCRS.fa.gz
+db44930f8db1d70f50c8eb130dbc0713  chm13v2.0_noY.fa.gz

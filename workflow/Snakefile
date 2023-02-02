@@ -3,18 +3,23 @@
 
 from snakemake.utils import min_version
 from os.path import splitext
+import re
 
 min_version("6.4.1")
 
 configfile: "config/config.yaml"
 
 wildcard_constraints:
-    fasta_base = '[\w\-. ]+\.(fasta|fa|fna)$'
+    fasta_base = '[\w\-. ]+\.(fasta|fa|fna)',
+    f = '[\w\-. ]+'
 
 include: "rules/remote.smk"
 include: "rules/extract.smk"
 include: "rules/star_index.smk"
 include: "rules/repeat_annotation.smk"
+include: "rules/gencode.smk"
+include: "rules/sequences.smk"
+
 
 rule all:
     input:
