@@ -8,42 +8,48 @@ gdc_viruses = pd.read_csv('resources/GRCh83.d1.vd1_virus_decoy.txt', sep='\t', h
 gdc_viruses['acc'] = np.where(pd.notnull(gdc_viruses["RefSeq"]), gdc_viruses["RefSeq"], gdc_viruses["GenBank"])
 gdc_viruses['acc'] = gdc_viruses['acc'].str.split(pat='.', expand=True)[0]
 
-# Get a subset
-# gdc_viruses = pd.concat([gdc_viruses.iloc[:8], gdc_viruses.iloc[186:190]])
+# print(gdc_viruses)
 
-
-rule get_genbank_gtf:
+rule virus_genome_from_GRCh38_d1_vd1:
+    """ Extract genome sequence (FASTA) for one virus from GRCh38_d1_vd1"""
     output:
-        'databases/remotefiles/viruses/{accession}_genomic.gtf.gz'
-    params:
-        newref = lambda wc: gdc_viruses.index[gdc_viruses['acc'] == wc.accession].tolist()[0]        
-    conda: '../envs/entrez.yaml'
+        "databases/sequences/viruses/{newref}.fna.gz",
+        "databases/sequences/viruses/{newref}.fna.gz.gzi",
+        "databases/sequences/viruses/{newref}.fna.gz.fai",
+        "databases/sequences/viruses/{newref}.dict"
+    input:
+        "databases/sequences/GRCh38.d1.vd1.fa.gz",
+        "databases/sequences/GRCh38.d1.vd1.fa.gz.fai"
+    conda: '../envs/utils.yaml'
     shell:
         '''
-# Determine if accession is in "Assembly" database
-res1=$(esearch -db assembly -query {wildcards.accession})
-asmcount=$(echo $res1 | xtract -pattern ENTREZ_DIRECT -element Count)
-
-# Download from Genomes FTP
-if [[ "$asmcount" -gt "0" ]]; then
-    baseurl=$(echo $res1 | esummary | xtract -pattern DocumentSummary -element FtpPath_GenBank)
-    [[ -z "$baseurl" ]] && baseurl=$(echo $res1 | esummary | xtract -pattern DocumentSummary -element FtpPath_RefSeq)
-    url=$baseurl/$(basename $baseurl)_genomic.gtf.gz
-    curl -o {output[0]} $url || echo "curl fail $?"
-fi
-
-if [[ ! -e {output[0]} ]]; then
-    rawgff=$(dirname {output[0]})/{wildcards.accession}_genomic.gff3
-    url="https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id={wildcards.accession}"
-    curl -o $rawgff $url
-    
-    echo "#gtf-version 2.2" | gzip > {output[0]}
-    head $rawgff | grep "^#" | sed "s/^##/#!/" | gzip >> {output[0]}
-    gffread --keep-comments --force-exons -F -E -T $rawgff | gzip >> {output[0]}
-fi
+samtools faidx {input[0]} {wildcards.newref} | bgzip > {output[0]}
+samtools faidx {output[0]}
+picard CreateSequenceDictionary -R {output[0]}
         '''
 
-rule get_genbank_gff3:
+rule gdc_viruses_fasta:
+    """ Extract genome sequences (FASTA) for all viruses from GRCh38_d1_vd1"""
+    output:
+        "databases/sequences/gdc.vd1.fna.gz",
+        "databases/sequences/gdc.vd1.fna.gz.gzi",
+        "databases/sequences/gdc.vd1.fna.gz.fai",
+        "databases/sequences/gdc.vd1.dict"
+    input:
+        "databases/sequences/GRCh38.d1.vd1.fa.gz",
+        "databases/sequences/GRCh38.d1.vd1.fa.gz.fai"
+    params:
+        virus_reg = lambda wc: ' '.join(gdc_viruses.index)
+    conda: '../envs/utils.yaml'
+    shell:
+        '''
+samtools faidx {input[0]} {params.virus_reg} | bgzip > {output[0]}
+samtools faidx {output[0]}
+picard CreateSequenceDictionary -R {output[0]}        
+        '''
+
+rule remote_gff3_genbank:
+    """ Download GFF3 annotation for accession """
     output:
         'databases/remotefiles/viruses/{accession}.gff3'
     shell:
@@ -51,19 +57,71 @@ rule get_genbank_gff3:
 curl -o {output} "https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id={wildcards.accession}"
         '''
 
-rule gff3_to_gtf:
-    input:
-        'databases/remotefiles/viruses/{accession}.gff3'    
+rule gdc_virus_gtf:
+    """ Create GTF for a virus in GDC virus decoy """
     output:
-        'databases/annotations/viruses/{accession}.gtf'
-    params:
-        newref = lambda wc: gdc_viruses.index[gdc_viruses['acc'] == wc.accession].tolist()[0]
+        'databases/annotations/gdc.vd1/{newref}.gtf'
+    input:
+        lambda wc: f'databases/remotefiles/viruses/{gdc_viruses.loc[wc.newref]["acc"]}.gff3'
     conda: '../envs/gffread.yaml'
     shell:
         '''
-gffread --force-exons -FET {input} | workflow/scripts/rename_reference_gtf.py {params.newref} > {output}
+gffread --force-exons -FET {input} | workflow/scripts/rename_reference.py {wildcards.newref} > {output}
         '''
 
+rule gdc_viruses_gtf:
+    """ GTF for all GDC viruses """
+    output:
+        "databases/annotations/gdc.vd1.gtf"
+    input:
+        expand('databases/annotations/gdc.vd1/{newref}.gtf', newref=gdc_viruses.index)
+    shell:
+        '''
+cat {input} > {output}        
+        '''
+
+
+rule virus_assembly_gtf:
+    """ 
+        Use remote_gff3_genbank instead of this because not all viruses are 
+        in the assembly database and I am unsure of the GTF. 
+    """
+    output:
+        'databases/remotefiles/viruses/{accession}_genomic.gtf.gz'
+    conda: '../envs/entrez.yaml'
+    shell:
+        '''
+# Determine if accession is in "Assembly" database
+searchXML=$(esearch -db assembly -query {wildcards.accession})
+asmcount=$(echo $searchXML | xtract -pattern ENTREZ_DIRECT -element Count)
+
+# Download from "Assembly" FTP
+if [[ "$asmcount" -gt "0" ]]; then
+    echo "Found $asmcount result(s) for {wildcards.accession} in assembly database"
+    summaryXML=$(echo $searchXML | esummary)
+    gbkURL=$(echo $summaryXML | xtract -pattern DocumentSummary -element FtpPath_GenBank)
+    refURL=$(echo $summaryXML | xtract -pattern DocumentSummary -element FtpPath_RefSeq)
+    if [[ ! -z "$refURL" ]]; then
+        url=$refURL/$(basename $refURL)_genomic.gtf.gz
+        echo "Downloading from $url"
+        curl -o {output[0]} $url || echo "curl fail $?" 
+    elif [[ ! -z "$gbkURL" ]]; then
+        url=$gbkURL/$(basename $gbkURL)_genomic.gtf.gz
+        echo "Downloading from $url"
+        curl -o {output[0]} $url || echo "curl fail $?"
+    fi    
+fi
+        '''
+
+# if [[ ! -e {output[0]} ]]; then
+#     rawgff=$(dirname {output[0]})/{wildcards.accession}_genomic.gff3
+#     url="https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id={wildcards.accession}"
+#     curl -o $rawgff $url
+#
+#     echo "#gtf-version 2.2" | gzip > {output[0]}
+#     head $rawgff | grep "^#" | sed "s/^##/#!/" | gzip >> {output[0]}
+#     gffread --keep-comments --force-exons -F -E -T $rawgff | gzip >> {output[0]}
+# fi
 
 
 #         '''
@@ -79,88 +137,8 @@ gffread --force-exons -FET {input} | workflow/scripts/rename_reference_gtf.py {p
 #     wget -O {output[0]} $url
 # fi
 #         '''
+# efetch -db nuccore -id NC_006273 -format gff3
 
-
-# efetch -db nuccore -id NC_006273 -format gb
-
-
-rule rename_gdc_virus:
-    input:
-        'databases/remotefiles/viruses/{accession}_genomic.gtf.gz'
-    output:
-        'databases/annotations/viruses/{accession}_genomic.gtf'
-    params:
-        newref = lambda wc: gdc_viruses.index[gdc_viruses['acc'] == wc.accession].tolist()[0]
-    shell:
-        'gunzip -c {input} | workflow/scripts/rename_reference_gtf.py {params.newref} > {output}'
-
-
-rule gdc_viruses_annotation:
-    output:
-        "databases/annotations/gdc38_viruses.gtf"
-    input:
-        expand('databases/annotations/viruses/{acc}_genomic.gtf', acc=gdc_viruses['acc'])
-    shell:
-        'cat {input} > {output}'
-
-
-rule get_gdc_virus_fasta:
-    output:
-        "databases/sequences/viruses/{newref}.fna"
-    input:
-        "databases/sequences/gdc38.fna"
-    conda: '../envs/utils.yaml'        
-    shell:
-        'samtools faidx {input} {wildcards.newref} > {output}'
-
-
-rule gdc_viruses_fasta:
-    output:
-        "databases/sequences/gdc38_viruses.fna"
-    input:
-        expand("databases/sequences/viruses/{newref}.fna", newref=gdc_viruses.index)
-    shell:
-        'cat {input} > {output}'
-
-
-# rule gdc_viruses_annotation_from_assembly:
-#     output:
-#         "databases/annotations/virusesASM.annotation.gtf.gz"
-#     input:
-#         expand('databases/remotefiles/viruses/{acc}_genomic.gtf.gz', acc=gdc_viruses['acc'])
-#     shell:
-#         'cat {input} > {output}'
-
-# one reference per GFF
-# for f in databases/remotefiles/viruses/*.gff; do
-#     grep -v '^#' $f | sed -r '/^\s*$/d' | cut -f1 | sort | uniq | wc -l
-# done
-
-
-
-
-# rule get_genbank_fasta:
-#     output:
-#         'databases/remotefiles/viruses/{accession}.fna'
-#     shell:
-#         '''
-# wget -O {output} "https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=fasta&id={wildcards.accession}"
-#         '''
-
-# rule gff_to_gtf:
-#     input:
-#         'databases/remotefiles/viruses/{accession}.gff'
-#     output:
-#         'databases/annotations/viruses/{accession}.gtf'
-#     params:
-#         newref = lambda wc: gdc_viruses.index[gdc_viruses['acc'] == wc.accession].tolist()[0]
-#     conda: '../envs/gffread.yaml'
-#     shell:
-#         '''
-# echo -e "$(grep -v '^#' {input} | head -n1 | cut -f1)\t{params.newref}" > {input}.namemap.txt
-# gffread -m {input}.namemap.txt --force-exons -F -E -T {input} > {output}
-# rm {input}.namemap.txt
-#         '''
 
 
 

@@ -1,3 +1,6 @@
+include: "rules/gencode.smk"
+include: "rules/repeat_annotation.smk"
+
 rule extract_gtf_gz:
     input:
         'databases/remotefiles/{f}.gtf.gz'
@@ -5,7 +8,6 @@ rule extract_gtf_gz:
         'databases/annotations/{f}.gtf'    
     shell:
         '''
-echo {resources.tmpdir}
 gunzip -c {input} > {output}
         '''
 
@@ -25,16 +27,16 @@ tabix -p gff {output[0]}
         '''
 
 
-rule bgzip_fasta:
-    input:
-        'databases/sequences/{prefix}.{ext, fna|fa}'
-    output:
-        'databases/sequences/{prefix}.{ext}.gz',
-        'databases/sequences/{prefix}.{ext}.gz.fai'
-    conda:
-        '../envs/utils.yaml'
-    shell:
-        '''bgzip < {input} > {output[0]} && samtools faidx {output[0]}'''
+# rule bgzip_fasta:
+#     input:
+#         'databases/sequences/{prefix}.{ext, fna|fa}'
+#     output:
+#         'databases/sequences/{prefix}.{ext}.gz',
+#         'databases/sequences/{prefix}.{ext}.gz.fai'
+#     conda:
+#         '../envs/utils.yaml'
+#     shell:
+#         '''bgzip < {input} > {output[0]} && samtools faidx {output[0]}'''
 
 
 # rule extract_gdc38:

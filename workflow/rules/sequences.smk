@@ -8,7 +8,7 @@ Add GCA_000001405.15_GRCh38 analysis sets to config['remotefiles']
 See https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/README_analysis_sets.txt
 """
 _baseftp = '''ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids'''
-for l in open('resources/GCA_000001405.15_GRCh38.md5checksums.txt', 'r'):
+for l in open('resources/checksums/GCA_000001405.15_GRCh38.md5checksums.txt', 'r'):
     _md5,_fn = l.split()
     _fn = basename(_fn)
     config['remotefiles'][_fn] = {
@@ -20,7 +20,7 @@ for l in open('resources/GCA_000001405.15_GRCh38.md5checksums.txt', 'r'):
 Add T2T analysis set to config['remotefiles']
 """
 _basehtml = '''https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/analysis_set'''
-for l in open('resources/T2T.CHM13.assemblies.analysis_set.md5checksums.txt', 'r'):
+for l in open('resources/checksums/T2T.CHM13.assemblies.analysis_set.md5checksums.txt', 'r'):
     _md5,_fn = l.split()
     _fn = basename(_fn)
     config['remotefiles'][_fn] = {
