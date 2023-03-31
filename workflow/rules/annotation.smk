@@ -1,31 +1,30 @@
-include: "rules/gencode.smk"
-include: "rules/repeat_annotation.smk"
+include: "gencode.smk"
+include: "repeat_annotation.smk"
 
-rule extract_gtf_gz:
-    input:
-        'databases/remotefiles/{f}.gtf.gz'
-    output:
-        'databases/annotations/{f}.gtf'    
-    shell:
-        '''
-gunzip -c {input} > {output}
-        '''
-
-
-rule tabix_gtf:
-    input:
-        'databases/annotations/{f}.gtf'
-    output:
-        'databases/annotations/{f}.gtf.gz',
-        'databases/annotations/{f}.gtf.gz.tbi'
-    conda:
-        '../envs/utils.yaml'
-    shell:
-        '''
-(grep "^#" {input}; grep -v "^#" {input} | sort -t"`printf '\t'`" -k1,1 -k4,4n) | bgzip > {output[0]}
-tabix -p gff {output[0]}       
-        '''
-
+# rule extract_gtf_gz:
+#     input:
+#         'databases/remotefiles/{f}.gtf.gz'
+#     output:
+#         'databases/annotations/{f}.gtf'
+#     shell:
+#         '''
+# gunzip -c {input} > {output}
+#         '''
+#
+#
+# rule tabix_gtf:
+#     input:
+#         'databases/annotations/{f}.gtf'
+#     output:
+#         'databases/annotations/{f}.gtf.gz',
+#         'databases/annotations/{f}.gtf.gz.tbi'
+#     conda: '../envs/utils.yaml'
+#     shell:
+#         '''
+# (grep "^#" {input}; grep -v "^#" {input} | sort -t"`printf '\t'`" -k1,1 -k4,4n) | bgzip > {output[0]}
+# tabix -p gff {output[0]}
+#         '''
+#
 
 # rule bgzip_fasta:
 #     input:

@@ -1,12 +1,33 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 import re
-from collections import OrderedDict
 import gzip
+import pandas as pd
 
 from typing import Optional
 
+if sys.version_info.major != 3:
+    _ = sys.stderr.write('python3 is required\n')
+    sys.exit(1)
+
+USE_ORDERED_DICT = sys.version_info.minor < 6
+
+if USE_ORDERED_DICT:
+    from collections import OrderedDict
+
+GTFCOLS = [
+    'chrom',
+    'source',
+    'feature',
+    'start',
+    'end',
+    'score',
+    'strand',
+    'frame',
+    'attributes'
+]
 
 class GTFError(Exception):
     pass
@@ -81,3 +102,42 @@ def iterfile(filepath):
         return gzip.open(filepath, 'rt')
     else:
         return open(filepath, 'r')
+
+
+def convert_attstr(s):
+    finditer = re.findall('(\S+)\s+"([\s\S]*?)"(?:;|$)', s.strip())
+    if USE_ORDERED_DICT:
+        return OrderedDict(finditer)
+    else:
+        return dict(finditer)
+
+def check_setdefault(d, key, newval):
+    curval = d.setdefault(key, newval)
+    return curval == newval
+
+
+def obj_size_fmt(num):
+    if num<10**3:
+        return "{:.2f}{}".format(num,"B")
+    elif ((num>=10**3)&(num<10**6)):
+        return "{:.2f}{}".format(num/(1.024*10**3),"KB")
+    elif ((num>=10**6)&(num<10**9)):
+        return "{:.2f}{}".format(num/(1.024*10**6),"MB")
+    else:
+        return "{:.2f}{}".format(num/(1.024*10**9),"GB")
+
+def memory_usage(ntop=10):
+    mem_ubv = (
+        pd.DataFrame({
+            k:sys.getsizeof(v) for (k,v) in globals().items()
+        },index=['Size'])
+        .T
+        .sort_values(by='Size',ascending=False)
+    )
+    mem_total = mem_ubv['Size'].sum()
+    ret = pd.concat([
+        pd.DataFrame({'Size':mem_total}, index=['@TOTAL']),
+        mem_ubv,
+    ])
+    ret['Size-hr'] = ret.apply(lambda x: obj_size_fmt(x.Size), axis=1)
+    return ret.head(ntop+1)

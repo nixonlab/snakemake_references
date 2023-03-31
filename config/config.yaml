@@ -42,3 +42,12 @@ remotefiles:
         url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/genes.tsv.gz"
         md5: "b3ca6d3705d030742255d216e25dfc1d"
 
+gencode_versions:
+    - 22
+    - 36
+    - 38
+    - 40
+    - 41
+    - 43
+    - M25
+    - M32
