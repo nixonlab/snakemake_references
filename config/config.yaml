@@ -1,4 +1,4 @@
-local_tmp: "/local"
+local_tmp: "$TMPDIR"
 
 # Remote files to be downloaded to refs/downloads
 remotefiles:

@@ -70,61 +70,49 @@ tabix -p gff {output.allgtf}
         '''
 
 rule gencode_annotation_metadata:
+    input:
+        allgtf = rules.gencode_annotation_gtf.output.allgtf
     output:
-        expand('databases/annotations/gencode.v{{gencode_release}}/gencode.v{{gencode_release}}.metadata.{table}.txt.gz',
+        expand('databases/annotations/gencode.v{{gencode_release}}/metadata.{table}.txt.gz',
             table = ['gene_features', 'tx_features', 'exon_features',
                      'gid_gname', 'gid_gtype', 'gid_hgnc', 'gid_tid',
                      'tid_tname', 'tid_ttype', 'tid_hgnc', 'tid_gid',
                     ]
         )
-    input:
-        allgtf = rules.gencode_annotation_gtf.output.allgtf
     params:
-        out_prefix = lambda wc: f'databases/annotations/gencode.v{wc.gencode_release}/gencode.v{wc.gencode_release}'
+        out_prefix = lambda wc: f'databases/annotations/gencode.v{wc.gencode_release}/'
     shell:
         '''
 workflow/scripts/gtf_metadata.py --intfeats exon {input.allgtf} {params.out_prefix}
         '''
 
-rule gencode_annotation:
+rule gencode_annotation_rds:
     input:
-        rules.gencode_annotation_gtf.output,
         rules.gencode_annotation_metadata.output
     output:
-        directory('databases/annotations/gencode.v{gencode_release}')
+        expand('databases/annotations/gencode.v{{gencode_release}}/metadata.{table}.rds',
+            table=['gene_features', 'tx_features', 'exon_features',
+                   'gid_gname', 'gid_gtype', 'gid_hgnc', 'gid_tid',
+                   'tid_tname', 'tid_ttype', 'tid_hgnc', 'tid_gid',
+                   ]
+        )
+
+    conda: '../envs/rbase.yaml'
+    script:
+        '../scripts/metadata_rds.R'
+
+rule gencode_annotation_complete:
+    input:
+        rules.gencode_annotation_gtf.output.allgtf,
+        rules.gencode_annotation_gtf.output.alltbi,
+        rules.gencode_annotation_rds.output
+    output:
+        'databases/annotations/gencode.v{gencode_release}/transcripts.gtf.gz',
+        'databases/annotations/gencode.v{gencode_release}/transcripts.gtf.gz.tbi'
     shell:
-        'mkdir -p {output[0]}'
-
-# def gencode_md5(wildcards, input):
-#     with open(input[0]) as fh:
-#         lkup = {v:k for k,v in (l.strip().split()[:2] for l in fh)}
-#     if wildcards.f in lkup:
-#         return lkup[wildcards.f]
-
-
-# rule gencode_remotefile:
-#     """ Downloads a remote file and checks the md5sum.
-#         Filenames and md5 checksums are in the output file created by
-#         `gencode_file_list`
-#     """
-#     input:
-#         rules.gencode_file_list.output
-#     output:
-#         'databases/remotefiles/gencode.v{gencode_release}/{f}'
-#     params:
-#         urlbase = gencode_url
-#     shell:
-#         '''
-# curl --create-dirs -o {output[0]} -L {params.urlbase}/{wildcards.f}
-# md5=$(grep {wildcards.f} {input[0]} | cut -f1 -d' ')
-# echo "$md5  {output[0]}" | md5sum -c -
-#         '''
-
-
-#
-#
-#
-# '''
-# # curl -L {params.urlbase}/{wildcards.f} > {output[0]}
-# echo {params.md5}  {output[0]} | md5sum -c -
-# '''
+        '''
+chmod 0444 $(dirname {output[0]})/*
+chmod 0555 $(dirname {output[0]})/*
+ln -s ./$(basename {input[0]}) {output[0]}
+ln -s ./$(basename {input[1]}) {output[1]}
+        '''

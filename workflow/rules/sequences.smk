@@ -36,14 +36,15 @@ rule setup_ncbi_analysis_set:
     input:
         'databases/remotefiles/GCA_000001405.15_GRCh38_{aset}_analysis_set.fna.gz'
     output:
-        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set.fna.gz',
-        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set.fna.gz.gzi',
-        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set.fna.gz.fai',
-        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set.dict'
+        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set/genome.fna.gz',
+        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set/genome.fna.gz.gzi',
+        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set/genome.fna.gz.fai',
+        'databases/sequences/GCA_000001405.15_GRCh38_{aset}_analysis_set/genome.dict'
     conda:
         '../envs/utils.yaml'
     shell:
         '''
+mkdir -p $(dirname {output[0]})        
 gunzip -c {input} | bgzip > {output[0]}
 samtools faidx {output[0]}
 picard CreateSequenceDictionary -R {output[0]}
@@ -54,14 +55,15 @@ rule setup_gdc_analysis_set:
     input:
         'databases/remotefiles/GRCh38.d1.vd1.fa.tar.gz'
     output:
-        'databases/sequences/GRCh38.d1.vd1.fa.gz',
-        'databases/sequences/GRCh38.d1.vd1.fa.gz.gzi',
-        'databases/sequences/GRCh38.d1.vd1.fa.gz.fai',
-        'databases/sequences/GRCh38.d1.vd1.dict'
+        'databases/sequences/GRCh38.d1.vd1/genome.fna.gz',
+        'databases/sequences/GRCh38.d1.vd1/genome.fna.gz.gzi',
+        'databases/sequences/GRCh38.d1.vd1/genome.fna.gz.fai',
+        'databases/sequences/GRCh38.d1.vd1/genome.dict'
     conda:
         '../envs/utils.yaml'
     shell:
         '''
+mkdir -p $(dirname {output[0]})
 tar -Oxzf {input} | bgzip > {output[0]}
 samtools faidx {output[0]}
 picard CreateSequenceDictionary -R {output[0]}
@@ -71,16 +73,17 @@ rule setup_T2T_analysis_set:
     input:
         'databases/remotefiles/chm13v2.0{aset}.fa.gz'
     output:
-        'databases/sequences/chm13v2.0{aset}.fa.gz',
-        'databases/sequences/chm13v2.0{aset}.fa.gz.gzi',
-        'databases/sequences/chm13v2.0{aset}.fa.gz.fai',
-        'databases/sequences/chm13v2.0{aset}.dict'
+        'databases/sequences/chm13v2.0{aset}/genome.fna.gz',
+        'databases/sequences/chm13v2.0{aset}/genome.fna.gz.gzi',
+        'databases/sequences/chm13v2.0{aset}/genome.fna.gz.fai',
+        'databases/sequences/chm13v2.0{aset}/genome.dict'
     wildcard_constraints:
         aset = '(_maskedY|_maskedY_rCRS|_noY)*'
     conda:
         '../envs/utils.yaml'
     shell:
         '''
+mkdir -p $(dirname {output[0]})
 gunzip -c {input} | bgzip > {output[0]}
 samtools faidx {output[0]}
 picard CreateSequenceDictionary -R {output[0]}
