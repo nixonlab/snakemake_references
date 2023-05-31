@@ -90,7 +90,7 @@ rule star_index_local:
         'databases/indexes/STAR_{genome_name}_{annot_name}/Log.out'
     params:
         sjdbOverhang=100,
-        genomeDir = lambda wc, out: os.path.dirname(out[1])
+        genomeDir = lambda wildcards, output: os.path.dirname(output[1])
     conda: "../envs/star.yaml"
     threads: snakemake.utils.available_cpu_count()
     shell:

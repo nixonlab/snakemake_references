@@ -33,6 +33,7 @@ remotefiles:
 gencode_versions:
     - "38"
     - "40"
+    - "43"
     - "M25"
     - "M32"
 

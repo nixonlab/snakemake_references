@@ -9,7 +9,6 @@ rule build_remotefile_db:
 def getparams_download_remote_db(wildcards):
     with open(rules.build_remotefile_db.output[0], 'r') as dbfh:
         db = json.load(dbfh)
-    print(db[wildcards.f])
     return dict(db[wildcards.f])
 
 rule download_remote_db:
