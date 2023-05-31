@@ -3,8 +3,11 @@ import json
 rule build_remotefile_db:
     output:
         'resources/remotefile_db.json'
+    localrule:
+        True
     script:
         '../scripts/build_remote_db.py'
+
 
 def getparams_download_remote_db(wildcards):
     with open(rules.build_remotefile_db.output[0], 'r') as dbfh:

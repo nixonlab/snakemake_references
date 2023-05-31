@@ -74,6 +74,7 @@ rule gencode_annotation_complete:
     output:
         'databases/annotations/gencode.v{gencode_release}/transcripts.gtf.gz',
         'databases/annotations/gencode.v{gencode_release}/transcripts.gtf.gz.tbi'
+    localrule: True
     shell:
         '''
 chmod 0444 $(dirname {output[0]})/*

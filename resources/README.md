@@ -1,6 +1,9 @@
 # Resources
 
+## TODO: Update this, we are not doing this anymore.
+
 ## Remote file checksum downloads
+
 
 We use published MD5 checksums to validate the download of remote files. 
 We can parse the checksum files to populate the `config['remotefiles']`
