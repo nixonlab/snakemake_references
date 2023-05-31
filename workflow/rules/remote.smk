@@ -5,7 +5,7 @@ rule build_remotefile_db:
     output:
         'resources/remotefile_db.json'
     script:
-        '../scripts/build_remote_db.py'
+        '../scripts/build_remotefile_db.py'
 
 
 def getparams_download_remote_db(wildcards):
