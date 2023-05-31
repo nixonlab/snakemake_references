@@ -15,21 +15,23 @@ rule gencode_annotation_gtf:
     conda: '../envs/utils.yaml'
     shell:
         '''
+mkdir -p $(dirname {output.chroms})
+
 gunzip -c {input.allgtf} | grep -v '^#' | cut -f1 | uniq > {output.chroms}
 
 (
-    grep -Z "^#" {input.refgtf}
+    gunzip -c {input.refgtf} | head -n1000 | grep "^#"
     echo "## PG: bedtools sort -g {output.chroms} -i -"
     echo "## PG: bgzip"
-    grep -Zv "^#" {input.refgtf} | bedtools sort -g {output.chroms} -i -
+    gunzip -c {input.refgtf} | grep -v "^#" | bedtools sort -g {output.chroms} -i -
 ) | bgzip > {output.refgtf}
 tabix -p gff {output.refgtf}
 
 (
-    grep -Z "^#" {input.allgtf}
+    gunzip -c {input.allgtf} | head -n1000 | grep "^#"
     echo "## PG: bedtools sort -g {output.chroms} -i -"
-    echo "## PG: bgzip"    
-    grep -Zv "^#" {input.allgtf} | bedtools sort -g {output.chroms} -i -
+    echo "## PG: bgzip"
+    gunzip -c {input.allgtf} | grep -v "^#" | bedtools sort -g {output.chroms} -i -
 ) | bgzip > {output.allgtf}
 tabix -p gff {output.allgtf}
         '''
