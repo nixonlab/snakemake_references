@@ -1,10 +1,9 @@
 import json
 
+localrules: build_remotefile_db
 rule build_remotefile_db:
     output:
         'resources/remotefile_db.json'
-    localrule:
-        True
     script:
         '../scripts/build_remote_db.py'
 

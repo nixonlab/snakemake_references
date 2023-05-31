@@ -51,6 +51,8 @@ rule gencode_annotation_metadata:
 workflow/scripts/gtf_metadata.py --intfeats exon {input.allgtf} {params.out_prefix}
         '''
 
+localrules: gencode_annotation_rds, gencode_annotation_complete
+
 rule gencode_annotation_rds:
     input:
         rules.gencode_annotation_metadata.output
@@ -66,6 +68,7 @@ rule gencode_annotation_rds:
     script:
         '../scripts/metadata_rds.R'
 
+
 rule gencode_annotation_complete:
     input:
         rules.gencode_annotation_gtf.output.allgtf,
@@ -74,7 +77,6 @@ rule gencode_annotation_complete:
     output:
         'databases/annotations/gencode.v{gencode_release}/transcripts.gtf.gz',
         'databases/annotations/gencode.v{gencode_release}/transcripts.gtf.gz.tbi'
-    localrule: True
     shell:
         '''
 chmod 0444 $(dirname {output[0]})/*
