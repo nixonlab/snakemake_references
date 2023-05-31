@@ -11,7 +11,7 @@ def getparams_download_remote_db(wildcards):
         db = json.load(dbfh)
     return dict(db[wildcards.f])
 
-rule download_remote_db:
+rule download_remotefile:
     """ Downloads a remote file and checks the md5sum.
         Filenames, URLs and md5 checksums are stored in 
         resources/remotefiles_db.txt
