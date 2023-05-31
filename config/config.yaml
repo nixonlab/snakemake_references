@@ -23,18 +23,6 @@ remotefiles:
     gencode.gene.info.v22.tsv:
         url: "https://api.gdc.cancer.gov/data/b011ee3e-14d8-4a97-aed4-e0b10f6bbe82"
         md5: "0a3f1d9b0a679e2a426de36d8d74fbf9"
-    GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz:
-        url: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz"
-        md5: "a08035b6a6e31780e96a34008ff21bd6"
-    GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.hisat2_index.tar.gz:
-        url: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.hisat2_index.tar.gz"
-        md5: "de3609995cd7498322bf2f7b9c57d302"
-    GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.tar.gz:
-        url: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.tar.gz"
-        md5: "3f493e82d549f1d476491930965c10d0"
-    gencode.v38.annotation.gtf.gz:
-        url: "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz"
-        md5: "16fcae8ca8e488cd8056cf317d963407"
     retro.hg38.v1.gtf:
         url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/transcripts.gtf"
         md5: "c07cf115c1f957b3020efc547f3847fa"
@@ -43,11 +31,19 @@ remotefiles:
         md5: "b3ca6d3705d030742255d216e25dfc1d"
 
 gencode_versions:
-    - 22
-    - 36
-    - 38
-    - 40
-    - 41
-    - 43
-    - M25
-    - M32
+    - "38"
+    - "40"
+    - "M25"
+    - "M32"
+
+remote_checksums:
+    GCA_000001405.15_GRCh38:
+        baseurl: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids"
+        checksum_url: "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/md5checksums.txt"
+    GCA_009914755.4_T2T-CHM13v2.0:
+        baseurl: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0"
+        checksum_url: "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/md5checksums.txt"
+    T2T.CHM13.assemblies.analysis_set:
+        baseurl: "https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/analysis_set"
+        checksum_url: "https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/analysis_set/README.txt"
+

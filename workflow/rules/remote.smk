@@ -1,20 +1,31 @@
-config['remotefiles']['gencode.v40.annotation.gtf.gz'] = {
-    'url': 'http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz',
-    'md5': '14a867b82917c8c3006838c3a5053a3e'
-}
+import json
 
-rule download_remote:
+rule build_remotefile_db:
+    output:
+        'resources/remotefile_db.json'
+    script:
+        '../scripts/build_remote_db.py'
+
+def getparams_download_remote_db(wildcards):
+    with open(rules.build_remotefile_db.output[0], 'r') as dbfh:
+        db = json.load(dbfh)
+    print(db[wildcards.f])
+    return dict(db[wildcards.f])
+
+rule download_remote_db:
     """ Downloads a remote file and checks the md5sum.
-        Filenames, URLs and md5 checksums are configured in the `remotefiles` element of
-        the configfile
+        Filenames, URLs and md5 checksums are stored in 
+        resources/remotefiles_db.txt
     """
     output:
         'databases/remotefiles/{f}'
+    input:
+        rules.build_remotefile_db.output
     params:
-        url = lambda wildcards: config['remotefiles'][wildcards.f]['url'],
-        md5 = lambda wildcards: config['remotefiles'][wildcards.f]['md5']
+        getparams_download_remote_db
     shell:
         '''
-curl -L {params.url} > {output[0]}
-echo {params.md5}  {output[0]} | md5sum -c -
+curl -L {params[0][url]} > {output[0]}
+echo {params[0][md5]}  {output[0]} | md5sum -c -
         '''
+
