@@ -7,3 +7,5 @@ __pycache__/
 *.py[cod]
 
 workflow/scripts/_*
+resources/remotefile_db.json
+tmp*
