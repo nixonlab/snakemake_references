@@ -4,45 +4,69 @@
 import numpy as np
 import pandas as pd
 
-gdc_viruses = pd.read_csv('resources/GRCh83.d1.vd1_virus_decoy.txt', sep='\t', header=0, index_col="Abbreviation", dtype=pd.StringDtype())
+gdc_viruses = pd.read_csv(
+    'resources/GRCh83.d1.vd1_virus_decoy.txt',
+    sep='\t',
+    header=0,
+    index_col="Abbreviation",
+    dtype=pd.StringDtype()
+)
 gdc_viruses['acc'] = np.where(pd.notnull(gdc_viruses["RefSeq"]), gdc_viruses["RefSeq"], gdc_viruses["GenBank"])
 gdc_viruses['acc'] = gdc_viruses['acc'].str.split(pat='.', expand=True)[0]
 
-# print(gdc_viruses)
-
-rule virus_genome_from_GRCh38_d1_vd1:
-    """ Extract genome sequence (FASTA) for one virus from GRCh38_d1_vd1"""
+rule build_vd1_table:
     output:
-        "databases/sequences/viruses/{newref}.fna.gz",
-        "databases/sequences/viruses/{newref}.fna.gz.gzi",
-        "databases/sequences/viruses/{newref}.fna.gz.fai",
-        "databases/sequences/viruses/{newref}.dict"
-    input:
-        "databases/sequences/GRCh38.d1.vd1.fa.gz",
-        "databases/sequences/GRCh38.d1.vd1.fa.gz.fai"
-    conda: '../envs/utils.yaml'
+        'resources/GRCh83.d1.vd1_virus_decoy.txt'
+    params:
+        table_url = 'https://gdc.cancer.gov/files/public/file/GRCh83.d1.vd1_virus_decoy.txt'
     shell:
         '''
-samtools faidx {input[0]} {wildcards.newref} | bgzip > {output[0]}
-samtools faidx {output[0]}
-picard CreateSequenceDictionary -R {output[0]}
+curl -s -L {params.table_url} |\
+  sed 's/$/\n/' | sed 's/\r/\n/g' | sed -r '/^\s*$/d' | \
+  sed \
+    -e 's/CMV ( HHV-5)/CMV/' \
+    -e 's/EBV (HHV-4)/chrEBV/' \
+    -e 's/"HHV-8, KSHV"/KSHV/' \
+  > GRCh83.d1.vd1_virus_decoy.txt        
         '''
 
-rule gdc_viruses_fasta:
-    """ Extract genome sequences (FASTA) for all viruses from GRCh38_d1_vd1"""
+
+# rule virus_genome_from_GRCh38_d1_vd1:
+#     """ Extract genome sequence (FASTA) for one virus from GRCh38_d1_vd1"""
+#     output:
+#         "databases/sequences/viruses/{newref}.fna.gz",
+#         "databases/sequences/viruses/{newref}.fna.gz.gzi",
+#         "databases/sequences/viruses/{newref}.fna.gz.fai",
+#         "databases/sequences/viruses/{newref}.dict"
+#     input:
+#         "databases/sequences/GRCh38.d1.vd1.fa.gz",
+#         "databases/sequences/GRCh38.d1.vd1.fa.gz.fai"
+#     conda: '../envs/utils.yaml'
+#     shell:
+#         '''
+# mkdir -p $(dirname {output[0]})
+# samtools faidx {input[0]} {wildcards.newref} | bgzip > {output[0]}
+# samtools faidx {output[0]}
+# picard CreateSequenceDictionary -R {output[0]}
+#         '''
+
+rule setup_vd1_fasta:
+    """ Extract genome sequences (FASTA) for all viruses from GRCh38.d1.vd1"""
     output:
-        "databases/sequences/gdc.vd1.fna.gz",
-        "databases/sequences/gdc.vd1.fna.gz.gzi",
-        "databases/sequences/gdc.vd1.fna.gz.fai",
-        "databases/sequences/gdc.vd1.dict"
+        "databases/sequences/vd1/genome.fna.gz",
+        "databases/sequences/vd1/genome.fna.gz.gzi",
+        "databases/sequences/vd1/genome.fna.gz.fai",
+        "databases/sequences/vd1/genome.dict"
     input:
-        "databases/sequences/GRCh38.d1.vd1.fa.gz",
-        "databases/sequences/GRCh38.d1.vd1.fa.gz.fai"
+        "databases/sequences/GRCh38.d1.vd1/genome.fna.gz",
+        "databases/sequences/GRCh38.d1.vd1/genome.fna.gz.fai",
+        'resources/GRCh83.d1.vd1_virus_decoy.txt'
     params:
         virus_reg = lambda wc: ' '.join(gdc_viruses.index)
     conda: '../envs/utils.yaml'
     shell:
         '''
+mkdir -p $(dirname {output[0]})
 samtools faidx {input[0]} {params.virus_reg} | bgzip > {output[0]}
 samtools faidx {output[0]}
 picard CreateSequenceDictionary -R {output[0]}        
@@ -51,10 +75,10 @@ picard CreateSequenceDictionary -R {output[0]}
 rule remote_gff3_genbank:
     """ Download GFF3 annotation for accession """
     output:
-        'databases/remotefiles/viruses/{accession}.gff3'
+        'databases/remotefiles/genbank/{accession}.gff3'
     shell:
         '''
-curl -o {output} "https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id={wildcards.accession}"
+curl --create-dirs -o {output} "https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id={wildcards.accession}"
         '''
 
 rule gdc_virus_gtf:
