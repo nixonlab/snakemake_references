@@ -27,7 +27,7 @@ rule latest_hg38:
     input:
         "databases/indexes/STAR_GRCh38.d1.vd1_gencode.v43"
     output:
-        "databases/indexes/latest.hg38"
+        directory("databases/indexes/latest.hg38")
     shell:
         '''
 ln -s ./$(basename {input[0]}) {output[0]}
@@ -37,7 +37,7 @@ rule labref_hg38:
     input:
         "databases/indexes/STAR_GRCh38.d1.vd1_gencode.v38"
     output:
-        "databases/indexes/labref.hg38"
+        directory("databases/indexes/labref.hg38")
     shell:
         '''
 ln -s ./$(basename {input[0]}) {output[0]}

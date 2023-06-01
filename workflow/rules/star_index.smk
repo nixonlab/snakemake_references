@@ -76,18 +76,34 @@ STAR\
         '''
 """
 
+star_index_files = [
+ 'chrLength.txt',
+ 'chrNameLength.txt',
+ 'chrName.txt',
+ 'chrStart.txt',
+ 'exonGeTrInfo.tab',
+ 'exonInfo.tab',
+ 'geneInfo.tab',
+ 'Genome',
+ 'genomeParameters.txt',
+ 'SA',
+ 'SAindex',
+ 'sjdbInfo.txt',
+ 'sjdbList.fromGTF.out.tab',
+ 'sjdbList.out.tab',
+ 'transcriptInfo.tab',
+]
+
 
 rule star_index_local:
     input:
         genome_gz = 'databases/sequences/{genome_name}/genome.fna.gz',
         annot_gz = 'databases/annotations/{annot_name}/transcripts.gtf.gz'
     output:
-        directory("databases/indexes/STAR_{genome_name}_{annot_name}"),
-        'databases/indexes/STAR_{genome_name}_{annot_name}/SA',
-        'databases/indexes/STAR_{genome_name}_{annot_name}/SAindex',
-        'databases/indexes/STAR_{genome_name}_{annot_name}/Genome'
-    log:
-        'databases/indexes/STAR_{genome_name}_{annot_name}/Log.out'
+        protected(directory("databases/indexes/STAR_{genome_name}_{annot_name}")),
+        expand('databases/indexes/STAR_{{genome_name}}_{{annot_name}}/{basename}',
+            basename = star_index_files
+        )
     params:
         sjdbOverhang=100,
         genomeDir = lambda wildcards, output: os.path.dirname(output[1])
@@ -96,15 +112,20 @@ rule star_index_local:
     shell:
         '''
 tdir=$(mktemp -d {config[local_tmp]}/{rule}.XXXXXX)
+echo "temporary directory: $tdir"
+unpigz < {input.genome_gz} > $tdir/genome.fna &
+unpigz < {input.annot_gz} > $tdir/transcripts.gtf &
+wait
+
+mkdir -p $tdir/starindex
 STAR\
  --runThreadN {threads}\
  --runMode genomeGenerate\
- --genomeDir $tdir\
- --genomeFastaFiles {input.genome_gz}\
- --sjdbGTFfile {input.annot_gz}\
+ --genomeDir $tdir/starindex\
+ --genomeFastaFiles $tdir/genome.fna\
+ --sjdbGTFfile $tdir/transcripts.gtf\
  --sjdbOverhang {params.sjdbOverhang}
- 
- cp $tdir {params.genomeDir}
- chmod 0444 {params.genomeDir}/*
- chmod 0555 {params.genomeDir}
+
+mkdir -p {output[0]}
+cp $tdir/starindex/* {output[0]}
         '''
