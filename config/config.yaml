@@ -29,6 +29,9 @@ remotefiles:
     retro.hg38.v1.tsv.gz:
         url: "https://github.com/mlbendall/telescope_annotation_db/raw/master/builds/retro.hg38.v1/genes.tsv.gz"
         md5: "b3ca6d3705d030742255d216e25dfc1d"
+    refdata-gex-GRCh38-2020-A.tar.gz:
+        url: "https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz"
+        md5: "dfd654de39bff23917471e7fcc7a00cd"
 
 gencode_versions:
     - "38"

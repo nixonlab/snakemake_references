@@ -4,6 +4,8 @@ localrules: build_remotefile_db
 rule build_remotefile_db:
     output:
         'resources/remotefile_db.json'
+    input:
+        'config/config.yaml'   
     script:
         '../scripts/build_remotefile_db.py'
 

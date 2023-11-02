@@ -17,6 +17,7 @@ include: "rules/remote.smk"
 include: "rules/sequences.smk"
 include: "rules/annotation.smk"
 include: "rules/star_index.smk"
+include: "rules/cellranger.smk"
 
 
 include: "rules/virus_annotation.smk"
