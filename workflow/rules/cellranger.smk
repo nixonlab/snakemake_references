@@ -10,7 +10,7 @@ rule extract_cellranger_ref:
         'databases/indexes/cellranger/refdata-{refver}/genes/genes.gtf',
         'databases/indexes/cellranger/refdata-{refver}/star/SAindex'
     wildcard_constraints:
-        refver = '(gex-GRCh38-2020-A|gex-mm10-2020-A|gex-GRCh38-and-mm10-2020-A|cellranger-vdj-GRCh38-alts-ensembl-7.1.0)'
+        refver = f'({"|".join(config["cellranger_versions"])})'
     shell:
         '''
 mkdir -p databases/indexes/cellranger
@@ -57,9 +57,11 @@ rule cellranger_annotation_gtf:
     input:
         allgtf = 'databases/indexes/cellranger/refdata-{refver}/genes/genes.gtf'
     output:
-        allgtf = 'databases/annotations/cellranger-{refver}/genes.gtf.gz',
-        alltbi = 'databases/annotations/cellranger-{refver}/genes.gtf.gz.tbi',
-        chroms = 'databases/annotations/cellranger-{refver}/chroms.txt'
+        allgtf = 'databases/annotations/cellranger.{refver}/genes.gtf.gz',
+        alltbi = 'databases/annotations/cellranger.{refver}/genes.gtf.gz.tbi',
+        chroms = 'databases/annotations/cellranger.{refver}/chroms.txt'
+    wildcard_constraints:
+        refver = f'({"|".join(config["cellranger_versions"])})'
     conda: '../envs/utils.yaml'
     shell:
         '''
@@ -80,12 +82,14 @@ rule cellranger_annotation_metadata:
     input:
         allgtf = rules.cellranger_annotation_gtf.output.allgtf
     output:
-        expand('databases/annotations/cellranger-{{refver}}/metadata.{table}.txt.gz',
+        expand('databases/annotations/cellranger.{{refver}}/metadata.{table}.txt.gz',
             table = ['gene_features', 'tx_features',
                      'gid_gname', 'gid_gtype', 'gid_hgnc', 'gid_tid',
                      'tid_tname', 'tid_ttype', 'tid_hgnc', 'tid_gid',
                     ]
         )
+    wildcard_constraints:
+        refver = f'({"|".join(config["cellranger_versions"])})'
     params:
         out_prefix = lambda wc: f'databases/annotations/cellranger-{wc.refver}/'
     shell:
@@ -99,12 +103,14 @@ rule cellranger_annotation_rds:
     input:
         rules.cellranger_annotation_metadata.output
     output:
-        expand('databases/annotations/cellranger-{{refver}}/metadata.{table}.rds',
+        expand('databases/annotations/cellranger.{{refver}}/metadata.{table}.rds',
             table=['gene_features', 'tx_features',
                    'gid_gname', 'gid_gtype', 'gid_hgnc', 'gid_tid',
                    'tid_tname', 'tid_ttype', 'tid_hgnc', 'tid_gid',
                    ]
         )
+    wildcard_constraints:
+        refver = f'({"|".join(config["cellranger_versions"])})'
     conda: '../envs/rbase.yaml'
     script:
         '../scripts/metadata_rds.R'

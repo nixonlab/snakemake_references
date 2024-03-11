@@ -32,7 +32,21 @@ remotefiles:
     refdata-gex-GRCh38-2020-A.tar.gz:
         url: "https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz"
         md5: "dfd654de39bff23917471e7fcc7a00cd"
-
+    refdata-gex-mm10-2020-A.tar.gz:
+        url: "https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-mm10-2020-A.tar.gz"
+        md5: "886eeddde8731ffb58552d0bb81f533d"
+    refdata-gex-GRCh38-and-mm10-2020-A.tar.gz:
+        url: "https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-and-mm10-2020-A.tar.gz"
+        md5: "c34194518ef19a4d0c409b598bb7363e"
+    refdata-cellranger-vdj-GRCh38-alts-ensembl-7.1.0.tar.gz:
+        url: "https://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-7.1.0.tar.gz"
+        md5: "65b5b033723b07fc1bb5375e5645761c"
+    refdata-cellranger-vdj-GRCm38-alts-ensembl-7.0.0.tar.gz:
+        url: "https://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCm38-alts-ensembl-7.0.0.tar.gz"
+        md5: "c6f41db8f67aa83b04d64ba1ae96e681"
+    refdata-cellranger-arc-GRCh38-2020-A-2.0.0.tar.gz:
+        url: "https://cf.10xgenomics.com/supp/cell-atac/refdata-cellranger-arc-GRCh38-2020-A-2.0.0.tar.gz"
+        md5: "2f12f6016197869e21e5559827002716"
 gencode_versions:
     - "38"
     - "40"
@@ -50,4 +64,10 @@ remote_checksums:
     T2T.CHM13.assemblies.analysis_set:
         baseurl: "https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/analysis_set"
         checksum_url: "https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/analysis_set/README.txt"
+
+cellranger_versions:
+    - "gex-GRCh38-2020-A"
+    - "gex-mm10-2020-A"
+    - "gex-GRCh38-and-mm10-2020-A"
+    - "cellranger-vdj-GRCh38-alts-ensembl-7.1.0"
 
