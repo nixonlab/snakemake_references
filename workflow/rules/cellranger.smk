@@ -52,3 +52,59 @@ STAR\
 mkdir -p {output[0]}
 cp $tdir/starindex/* {output[0]}
         '''
+
+rule cellranger_annotation_gtf:
+    input:
+        allgtf = 'databases/indexes/cellranger/refdata-{refver}/genes/genes.gtf'
+    output:
+        allgtf = 'databases/annotations/cellranger-{refver}/genes.gtf.gz',
+        alltbi = 'databases/annotations/cellranger-{refver}/genes.gtf.gz.tbi',
+        chroms = 'databases/annotations/cellranger-{refver}/chroms.txt'
+    conda: '../envs/utils.yaml'
+    shell:
+        '''
+mkdir -p $(dirname {output.chroms})
+gunzip -c {input.allgtf} | grep -v '^#' | cut -f1 | uniq > {output.chroms}
+
+(
+    set +o pipefail
+    cat {input.allgtf} | head -n1000 | grep "^#"
+    echo "## PG: bedtools sort -g {output.chroms} -i -"
+    echo "## PG: bgzip"
+    cat {input.allgtf} | grep -v "^#" | bedtools sort -g {output.chroms} -i -
+) | bgzip -c > {output.allgtf}
+tabix -p gff {output.allgtf}
+        '''
+
+rule cellranger_annotation_metadata:
+    input:
+        allgtf = rules.cellranger_annotation_gtf.output.allgtf
+    output:
+        expand('databases/annotations/cellranger-{{refver}}/metadata.{table}.txt.gz',
+            table = ['gene_features', 'tx_features',
+                     'gid_gname', 'gid_gtype', 'gid_hgnc', 'gid_tid',
+                     'tid_tname', 'tid_ttype', 'tid_hgnc', 'tid_gid',
+                    ]
+        )
+    params:
+        out_prefix = lambda wc: f'databases/annotations/cellranger-{wc.refver}/'
+    shell:
+        '''
+workflow/scripts/gtf_metadata.py {input.allgtf} {params.out_prefix}
+        '''
+
+localrules: cellranger_annotation_rds
+
+rule cellranger_annotation_rds:
+    input:
+        rules.cellranger_annotation_metadata.output
+    output:
+        expand('databases/annotations/cellranger-{{refver}}/metadata.{table}.rds',
+            table=['gene_features', 'tx_features',
+                   'gid_gname', 'gid_gtype', 'gid_hgnc', 'gid_tid',
+                   'tid_tname', 'tid_ttype', 'tid_hgnc', 'tid_gid',
+                   ]
+        )
+    conda: '../envs/rbase.yaml'
+    script:
+        '../scripts/metadata_rds.R'
