@@ -56,9 +56,43 @@ It is recommended that you index the compressed file using
 and create a sequence dictionary using
 [`picard CreateSequenceDictionary`](https://gatk.broadinstitute.org/hc/en-us/articles/9570414410267-CreateSequenceDictionary-Picard-).
 
+
 ## `annotations`
 
-Annotation data for sequences.
+Annotation data for sequences
+
+### GENCODE Annotations
+
+The [GENCODE workflow](workflow/rules/gencode.smk) processes GTF annotation files into standardized formats:
+
+**Primary outputs:**
+
+- `transcripts.gtf.gz` - Sorted and indexed GTF file containing all transcripts (including patches, haplotypes, and scaffolds)  
+- `transcripts.gtf.gz.tbi` - index for random access  
+- `gencode.v{release}.REF.annotation.gtf.gz` - Reference chromosomes only  
+- `gencode.v{release}.ALL.annotation.gtf.gz` - All sequences (chromosomes + patches/haplotypes/scaffolds)
+
+**Metadata files** (`.rds` format for R, `.txt.gz` for other tools):
+
+*Feature tables* (genomic coordinates + attributes):
+
+- `metadata.gene_features` - Gene level features (coordinates, gene_id, gene_name, gene_type, etc)  
+- `metadata.tx_features` - Transcript level features (coordinates and transcript attributes)  
+- `metadata.exon_features` - exon level features (coordinates for all exons)
+
+*Lookup tables* (for ID conversion):
+
+- `metadata.gid_gname` - gene_id to  gene_name (e.g., ENSG00000139618 to BRCA2)  
+- `metadata.gid_gtype` - gene_id to gene_type (protein_coding, lncRNA, etc.)  
+- `metadata.gid_hgnc` - gene_id to HGNC ID  
+- `metadata.gid_tid` - gene_id to transcript_id (one to many)  
+- `metadata.tid_gid` - transcript_id to gene_id  
+- `metadata.tid_tname` - transcript_id to transcript_name  
+- `metadata.tid_ttype` - transcript_id to transcript_type  
+- `metadata.tid_hgnc` - transcript_id to HGNC ID
+
+These metadata files enable ID conversions and filtering without repeatedly parsing the full GTF file.  
+
 
 ## `indexes`
 
